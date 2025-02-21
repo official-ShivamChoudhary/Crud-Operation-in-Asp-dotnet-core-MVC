@@ -1,0 +1,102 @@
+﻿@model Crud_Operation_in_mvc.Models.Employee
+
+@{
+    ViewData["Title"] = "Delete";
+}
+<style>
+    body {
+        background-color: #f2f2f2;
+    }
+</style>
+
+<div>
+    <h1 class="text-primary">Delete </h1>
+    
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.EmployeeId)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.EmployeeId)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.EmpName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.EmpName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Designation)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Designation)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Technology)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Technology)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Salary)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Salary)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DateofJoining)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DateofJoining)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.MobileNo)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.MobileNo)
+        </dd>
+
+    </dl>
+    <form asp-action="Delete" asp-route-id="@Model.EmployeeId" method="post">
+        <input type="submit" value="Delete" class="btn btn-danger btn-sm" />
+        <a asp-action="Index" class="btn btn-primary btn-sm">Back to List</a>
+    </form>
+</div>
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.10.1/dist/sweetalert2.all.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.10.1/dist/sweetalert2.min.css">
+    <script>
+        document.querySelector('form').addEventListener('submit', function (e) {
+            e.preventDefault(); // Prevent the default form submission
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'You are about to delete this record.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Perform the form submission using AJAX
+                    var form = this;
+                    $.ajax({
+                        type: "POST",
+                        url: form.action,
+                        data: $(form).serialize(),
+                        success: function () {
+                            Swal.fire(
+                                'Deleted!',
+                                'The record has been deleted.',
+                                'success'
+                            ).then(function () {
+                                // Redirect to the index page after successful deletion
+                                window.location.href = "/Employee/Index"; // Change the URL here
+                            });
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+}

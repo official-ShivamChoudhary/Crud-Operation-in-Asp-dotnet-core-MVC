@@ -1,0 +1,145 @@
+﻿@model Crud_Operation_in_mvc.Models.Employee
+
+@{
+	ViewData["Title"] = "Create";
+}
+
+<style>
+	body {
+		background-color: #f2f2f2;
+	}
+</style>
+<h1 class="  text-primary">New Registration Here ! </h1>
+<div class="row">
+	<div class="col-md-4">
+		<form id="myForm" asp-action="Create">
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+			<div class="form-group">
+				<label asp-for="EmpName" class="control-label"></label>
+				<input asp-for="EmpName" placeholder="Enter your EmpName" class="form-control" />
+				<span asp-validation-for="EmpName" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="Designation" class="control-label"></label>
+				<input asp-for="Designation" placeholder="Enter your designation" class="form-control" />
+				<span asp-validation-for="Designation" class="text-danger"></span>
+			</div>
+
+			<div class="form-group">
+				<label asp-for="Technology" class="control-label"></label>
+				<input asp-for="Technology" placeholder="Enter your technology" class="form-control" />
+				<span asp-validation-for="Technology" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="Salary" class="control-label"></label>
+				<input asp-for="Salary" type="number" placeholder="Enter your Salary" class="form-control" />
+				<span asp-validation-for="Salary" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="DateofJoining" class="control-label"></label>
+				<input asp-for="DateofJoining" placeholder="Enter your date of joining" class="form-control" />
+				<span asp-validation-for="DateofJoining" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="Age" class="control-label"></label>
+				<input asp-for="Age" type="number" placeholder="Enter your Age" class="form-control" />
+				<span asp-validation-for="Age" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="MobileNo" class="control-label"></label>
+				<input asp-for="MobileNo" type="number" placeholder="Enter your MobileNo" class="form-control" />
+				<span asp-validation-for="MobileNo" class="text-danger"></span>
+			</div>
+
+
+			<br />
+			<div class="form-group">
+				<input type="submit" value="Submit" class="btn btn-primary btn-sm" />
+				<a asp-action="Index" class="btn btn-primary btn-sm">Back to List</a>
+			</div>
+		</form>
+	</div>
+</div>
+<br />
+
+
+@section Scripts {
+	@{
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
+	<!-- SweetAlert2 Library -->
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.10.1/dist/sweetalert2.all.min.js"></script>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.10.1/dist/sweetalert2.min.css">
+
+	<script>
+		document.getElementById('myForm').addEventListener('submit', function (e) {
+			e.preventDefault();
+			if (validateForm()) {
+				Swal.fire({
+					title: 'Registered Successfully!',
+					text: 'Your details have been submitted successfully.',
+					icon: 'success',
+					confirmButtonText: 'OK'
+				}).then((result) => {
+					if (result.isConfirmed) {
+						document.getElementById('myForm').submit();
+					}
+				});
+			}
+		});
+
+		function validateForm() {
+			// Get field values
+			var empName = document.getElementById('EmpName').value.trim();
+			var designation = document.getElementById('Designation').value.trim();
+			var technology = document.getElementById('Technology').value.trim();
+			var salary = document.getElementById('Salary').value.trim();
+			var dateOfJoining = document.getElementById('DateofJoining').value.trim();
+			var age = document.getElementById('Age').value.trim();
+			var mobileNo = document.getElementById('MobileNo').value.trim();
+
+			// Validate required fields
+			if (empName === '' || designation === '' || technology === '' || salary === '' || dateOfJoining === '' || age === '' || mobileNo === '') {
+				Swal.fire({
+					title: 'Validation Error',
+					text: 'All fields are required. Please fill in all details.',
+					icon: 'warning'
+				});
+				return false;
+			}
+
+			// Validate Salary (only numeric values allowed)
+			if (!/^\d+$/.test(salary)) {
+				Swal.fire({
+					title: 'Validation Error',
+					text: 'Salary must be a valid number.',
+					icon: 'warning'
+				});
+				return false;
+			}
+
+			// Validate Age (between 18 and 100)
+			if (!/^\d+$/.test(age) || age < 18 || age > 100) {
+				Swal.fire({
+					title: 'Validation Error',
+					text: 'Age must be a number between 18 and 100.',
+					icon: 'warning'
+				});
+				return false;
+			}
+
+			// Validate Mobile Number (exactly 10 digits)
+			if (!/^[0-9]{10}$/.test(mobileNo)) {
+				Swal.fire({
+					title: 'Validation Error',
+					text: 'Mobile Number must be exactly 10 digits (numbers only).',
+					icon: 'warning'
+				});
+				return false;
+			}
+
+			// If all validations pass
+			return true;
+		}
+	</script>
+}
